@@ -1,12 +1,17 @@
 class Player
-  @previoius_health = 0
+  @previous_health = 20
 
   def play_turn(warrior)
+    p "previous health: #{@previous_health}"
+    p "current health: #{warrior.health}"
+
     if is_enemy?(warrior)
+      @previous_health = warrior.health
       warrior.attack!
-    elsif warrior.health < 20
+    elsif safe_to_heal?(warrior)
       warrior.rest!
     else
+      @previous_health = warrior.health
       warrior.walk!
     end
   end
@@ -15,8 +20,12 @@ class Player
     warrior.feel.enemy?
   end
 
-  def safe_to_heal?
-   warrior.health < 20 && warrior.health == @previous_health
+  def safe_to_heal?(warrior)
+   should_heal?(warrior) && @previous_health <= warrior.health
+  end
+
+  def should_heal?(warrior)
+    warrior.health < 20
   end
 
 end
