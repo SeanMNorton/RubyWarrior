@@ -5,6 +5,8 @@ class Player
   def play_turn(warrior)
     if is_enemy?(warrior)
       warrior.attack!
+    elsif is_captive?(warrior)
+      warrior.rescue!
     elsif safe_to_heal?(warrior)
       warrior.rest!
     else
@@ -16,6 +18,10 @@ class Player
 
   def is_enemy?(warrior)
     warrior.feel.enemy?
+  end
+
+  def is_captive?(warrior)
+      warrior.feel.captive?
   end
 
   def safe_to_heal?(warrior)
